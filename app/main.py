@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from sqlalchemy import text
-
+from app.api.organizations import router as organizations_router
 from app.core.config import settings
 from app.core.database import engine
 
@@ -10,7 +10,7 @@ app = FastAPI(
     description="AI-powered business workflow automation platform",
     version="0.1.0",
 )
-
+app.include_router(organizations_router)
 
 @app.get("/")
 async def root():
