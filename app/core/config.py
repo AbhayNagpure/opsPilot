@@ -7,7 +7,9 @@ class Settings(BaseSettings):
     app_name: str = "OpsPilot"
     app_env: str = "development"
     debug: bool = True
-
+    jwt_secret: str
+    jwt_algorithm: str = "HS256"
+    access_token_expire_minutes: int = 60
     database_url: str
 
     model_config = SettingsConfigDict(

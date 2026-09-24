@@ -5,6 +5,7 @@ from app.core.config import settings
 from app.core.database import engine
 from app.api.users import router as users_router
 from app.api.memberships import router as memberships_router
+from app.api.auth import router as auth_router
 
 app = FastAPI(
     title=settings.app_name,
@@ -13,6 +14,7 @@ app = FastAPI(
 )
 app.include_router(organizations_router)
 app.include_router(users_router)
+app.include_router(auth_router)
 app.include_router(memberships_router)
 
 @app.get("/")

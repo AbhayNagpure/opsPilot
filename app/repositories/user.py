@@ -22,10 +22,15 @@ class UserRepository:
         )
         return result.scalar_one_or_none()
 
-    async def create(self, data: UserCreate) -> User:
+    async def create(
+        self,
+        data: UserCreate,
+        hashed_password: str,
+    ) -> User:
         user = User(
             email=data.email,
             full_name=data.full_name,
+            hashed_password=hashed_password,
         )
 
         self.db.add(user)

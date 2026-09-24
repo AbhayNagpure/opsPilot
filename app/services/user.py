@@ -1,9 +1,9 @@
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-
+from app.core.security import hash_password
 from app.repositories.user import UserRepository
 from app.schemas.user import UserCreate
-
+from app.core.security import hash_password
 
 class UserService:
 
@@ -19,4 +19,11 @@ class UserService:
                 detail="User with this email already exists",
             )
 
-        return await self.repository.create(data)
+        hashed_password = hash_password(data.password)
+
+        return await self.repository.create(
+            data,
+            hashed_password,
+        )
+
+ 
