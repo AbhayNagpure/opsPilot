@@ -1,5 +1,7 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
+from app.core.dependencies import require_org_admin
+from app.models.membership import OrganizationMembership
 from uuid import UUID
 from app.core.database import get_db
 from app.schemas.organization import (
@@ -40,3 +42,12 @@ async def create_organization(
 ):
     service = OrganizationService(db)
     return await service.create_organization(data)
+
+@router.get("/{organization_id}/admin-check")
+async def admin_check(
+    membership: OrganizationMembership = Depends(require_org_admin),
+):
+    return {
+        "message": "Admin access granted",
+        "role": membership.role,
+    }
