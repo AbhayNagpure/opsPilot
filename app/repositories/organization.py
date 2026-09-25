@@ -22,7 +22,7 @@ class OrganizationRepository:
             select(Organization).where(Organization.id == organization_id)
         )
 
-        return result.scalar_one_or_none()
+        return result.scalar_one_or_none()  
     
     async def get_by_slug(self, slug: str) -> Organization | None:
         result = await self.db.execute(
