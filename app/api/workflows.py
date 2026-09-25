@@ -2,11 +2,15 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.schemas.workflow import WorkflowCreate, WorkflowRead, WorkflowUpdate
+
 from app.core.database import get_db
 from app.core.dependencies import require_org_admin
 from app.models.membership import OrganizationMembership
-from app.schemas.workflow import WorkflowCreate, WorkflowRead
+from app.schemas.workflow import (
+    WorkflowCreate,
+    WorkflowRead,
+    WorkflowUpdate,
+)
 from app.services.workflow import WorkflowService
 
 
@@ -34,6 +38,7 @@ async def create_workflow(
         data,
     )
 
+
 @router.get(
     "/",
     response_model=list[WorkflowRead],
@@ -41,8 +46,10 @@ async def create_workflow(
 async def get_workflows(
     organization_id: UUID,
     db: AsyncSession = Depends(get_db),
+    membership: OrganizationMembership = Depends(require_org_admin),
 ):
     service = WorkflowService(db)
+
     return await service.get_organization_workflows(
         organization_id
     )
